@@ -5,7 +5,8 @@ const lessonSchema = new Schema({
     courseId: mongoose.Types.ObjectId,
     name: String,
     no: Number,
-    date: Date,
+    year: Number,
+    semesber: Number,
 });
 
 const Lesson = mongoose.model('Lesson', lessonSchema, 'lessons');

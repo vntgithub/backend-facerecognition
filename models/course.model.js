@@ -4,8 +4,6 @@ const Schema = mongoose.Schema;
 const courseSchema = new Schema({
     code: String,
     name: String,
-    year: Number,
-    semesber: Number,
     lessons: Array,
     class: mongoose.Types.ObjectId,
     teacherId: mongoose.Types.ObjectId
