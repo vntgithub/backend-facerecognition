@@ -7,6 +7,7 @@ const lessonSchema = new Schema({
     no: Number,
     year: Number,
     semesber: Number,
+    studentList: Array
 });
 
 const Lesson = mongoose.model('Lesson', lessonSchema, 'lessons');

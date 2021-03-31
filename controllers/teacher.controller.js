@@ -1,9 +1,9 @@
 const Teacher = require('../models/teacher.model');
-
+const md5 = require('md5');
 module.exports = {
     login: async(req, res) => {
         const username = req.body.username;
-        const password = req.body.password;
+        const password = md5(req.body.password);
         await Teacher.findOne({username: username, password: password})
         .then(teacher => {
             if(teacher){
@@ -42,14 +42,15 @@ module.exports = {
         })
     },
     add: async (req, res) => {
-        const newTeacher = new Teacher(req.body);
+        const data = {...req.body, password: md5(req.body.password)};
+        const newTeacher = new Teacher(data);
         await Teacher.create(newTeacher)
         .then(() => res.json(newTeacher))
         .catch(err => consle.log(err));
     },
     update: async (req, res) => {
         const idTeacherNeedUpdate = req.body['_id'];
-        const dataUpdate = req.body;
+        const dataUpdate = {...req.body};
         delete dataUpdate['_id'];
         await Teacher.findOneAndUpdate(idTeacherNeedUpdate, dataUpdate)
         .then(() => res.json('Updated!'))
@@ -60,6 +61,17 @@ module.exports = {
         console.log(idTeacherNeedDelete);
         await Teacher.findByIdAndDelete(idTeacherNeedDelete)
         .then(() => res.json('Deleted!'))
+        .catch(err => console.log(err));
+    },
+    findByName: async (req, res) => {
+        const name = req.params.name;
+        await Teacher.find({name: name})
+        .then(teacher => {
+            if(teacher)
+                res.json(teacher)
+            else
+                res.json("Not found!")
+        })
         .catch(err => console.log(err));
     }
 }
