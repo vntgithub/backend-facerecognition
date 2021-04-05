@@ -1,15 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const lessonSchema = new Schema({
+const groupSchema = new Schema({
     courseId: mongoose.Types.ObjectId,
-    name: String,
+    teacherName: String,
+    nameCourse: String,
     no: Number,
     year: Number,
     semesber: Number,
-    studentList: Array
+    classId: mongoose.Types.ObjectId,
+    isDone: Boolean
 });
 
-const Lesson = mongoose.model('Lesson', lessonSchema, 'lessons');
+const Group = mongoose.model('Group', groupSchema, 'groups');
 
-module.exports = Lesson;
+module.exports = Group;

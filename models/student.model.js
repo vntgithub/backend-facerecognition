@@ -6,7 +6,8 @@ const studentSchema = new Schema({
     password: String,
     code: String,
     name: String,
-    img: String
+    img: String,
+    groups: [mongoose.Types.ObjectId]
 });
 
 const Student = mongoose.model('Student', studentSchema, 'students');

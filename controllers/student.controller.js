@@ -1,4 +1,3 @@
-const { json } = require('body-parser');
 const md5 = require('md5');
 const Student = require('../models/student.model');
 
@@ -71,7 +70,7 @@ module.exports = {
     },
     findByCode: async (req, res) => {
         const code = req.params.code;
-        await Student.find({code: {$regex: ".*" + code + ".*"}})
+        await Student.find({code: {$regex: new RegExp(".*" + code.toLowerCase() + ".*", "i")}})
         .then(student => {
             if(student)
                 res.json(student)

@@ -5,8 +5,8 @@ const courseSchema = new Schema({
     code: String,
     name: String,
     lessons: Array,
-    class: mongoose.Types.ObjectId,
-    teacherId: mongoose.Types.ObjectId
+    teacherId: mongoose.Types.ObjectId,
+    teacherName: String
 })
 
 const Course = mongoose.model('Course', courseSchema, 'courses');

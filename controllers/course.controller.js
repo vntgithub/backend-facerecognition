@@ -7,9 +7,9 @@ module.exports = {
         .then(courses => res.json(courses))
         .catch(err => console.log(err))
     },
-    create: async (req, res) => {
-        const newCourse = req.body;
-        const newCourse = await Course.create(newCourse);
+    add: async (req, res) => {
+        const newCourse = {...req.body, lessons: [...req.body.lessons]};
+        await Course.create(newCourse);
         res.json("Course created!");
     },
     update: async (req, res) => {
@@ -29,9 +29,21 @@ module.exports = {
         .catch(err => console.log(err))
     },
     findByCode: async (req, res) => {
-        const name = req.params.name;
-        Course.find({name: name})
+        const code = req.params.code;
+        Course.find({code: {$regex: new RegExp(".*" + code.toLowerCase() + ".*", "i")}})
         .then(course => res.json(course))
+        .catch(err => console.log(err));
+    },
+    findByName: async (req, res) => {
+        const name = req.params.name;
+        await Course.find({name: name})
+        .then(courses => {
+            if(courses){
+                res.json(courses);
+            }else{
+                res.json('Not found');
+            }
+        })
         .catch(err => console.log(err));
     }
 }

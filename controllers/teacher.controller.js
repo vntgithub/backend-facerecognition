@@ -65,7 +65,7 @@ module.exports = {
     },
     findByName: async (req, res) => {
         const name = req.params.name;
-        await Teacher.find({name: name})
+        await Teacher.find({name: {$regex: new RegExp(".*" + name.toLowerCase() + ".*", "i")}})
         .then(teacher => {
             if(teacher)
                 res.json(teacher)
