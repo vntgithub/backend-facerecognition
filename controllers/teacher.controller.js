@@ -45,7 +45,7 @@ module.exports = {
         const data = {...req.body, password: md5(req.body.password)};
         const newTeacher = new Teacher(data);
         await Teacher.create(newTeacher)
-        .then(() => res.json(newTeacher))
+        .then(() => res.json("You have signed up successfully!"))
         .catch(err => consle.log(err));
     },
     update: async (req, res) => {
@@ -71,6 +71,17 @@ module.exports = {
                 res.json(teacher)
             else
                 res.json("Not found!")
+        })
+        .catch(err => console.log(err));
+    }, findByCode: async (req, res) => {
+        const code = req.params.code;
+        await teacher.find({ 'code': code})
+        .then(teachers => {
+            if(teacher){
+                res.json(teacher);
+            }else{
+                res.json([]);
+            }
         })
         .catch(err => console.log(err));
     }
