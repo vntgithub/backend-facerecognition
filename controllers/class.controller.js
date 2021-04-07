@@ -1,6 +1,18 @@
 const Class = require('../models/class.model');
 
 module.exports = {
+    getById: async (req, res) => {
+        const id = req.params.id;
+        await Class.findById(id)
+        .then(cls => {
+            if(cls){
+                res.json(cls);
+            }else{
+                res.json({});
+            }
+        })
+        .catch(err => console.log(err))
+    },
     add: async (req, res) => {
         const groupId = req.body.groupId;
         const newClass = new Class({
@@ -12,7 +24,7 @@ module.exports = {
         .catch(err => console.log(err));
     },
     studentJoinClass: async (req, res) => {
-        const classId = req.body.clasId;
+        const classId = req.body.classId;
         const studentId = req.body.studentId;
         const lesson = [...req.body.lesson];
         await Class.findById(classId)
@@ -20,12 +32,12 @@ module.exports = {
             if(rs){
                 rs.data.push({
                     studentId: studentId,
-                    lesson: lesson
+                    lessonAttend: lesson
                 })
                 rs.save();
-                rs.json("Joined!")
+                res.json("Joined!")
             }else{
-                rs.json('Class not found!')
+                res.json('Class not found!')
             }
         })
         .catch(err => console.log(err));

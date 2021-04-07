@@ -8,6 +8,7 @@ const adminRoute = require('./routes/admin.route');
 const teacherRoute = require('./routes/teacher.route');
 const studentRoute = require('./routes/student.route');
 const courseRoute = require('./routes/course.route');
+const classRoute = require('./routes/class.route');
 // const groupRoute = require('./routes/group.route');
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api/admin', adminRoute);
 app.use('/api/teacher', teacherRoute);
 app.use('/api/student', studentRoute);
 app.use('/api/course', courseRoute);
+app.use('/api/class', classRoute);
 
 mongodb.connection();
 
