@@ -1,5 +1,6 @@
 const Teacher = require('../models/teacher.model');
 const md5 = require('md5');
+const jwt = require('jsonwebtoken');
 module.exports = {
     login: async(req, res) => {
         const username = req.body.username;
@@ -7,11 +8,15 @@ module.exports = {
         await Teacher.findOne({username: username, password: password})
         .then(teacher => {
             if(teacher){
-                const loginAuth = {
-                    exist: true,
-                    data: teacher
-                }
-                res.json(loginAuth);
+                const data = {...teacher['_doc']};
+                delete data.password;
+                const token = jwt.sign({
+                    userId: data['_id']
+                }, process.env.SECRET_KEY);
+                res.json({
+                    data,
+                    token
+                });
             }else{
                 const loginAuth = {
                     exist: false,
@@ -22,14 +27,15 @@ module.exports = {
         })
         .catch(err => console.log(err));
     },
-    loginByCookie: async (req, res) => {
-        const cookie = req.body.cookie;
-        await Teacher.findById(cookie)
+    loginByToken: async (req, res) => {
+        const userId = req.user.userId;
+        await Teacher.findById(userId)
         .then(teacher => {
             if(teacher){
+                const data = {...teacher['_doc']};
                 const loginAuth = {
                     exist: true,
-                    data: teacher
+                    data
                 }
                 res.json(loginAuth);
             }else{

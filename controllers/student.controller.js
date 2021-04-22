@@ -1,5 +1,6 @@
 const md5 = require('md5');
 const Student = require('../models/student.model');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     login: async(req, res) => {
@@ -8,28 +9,31 @@ module.exports = {
         await Student.find({username: username, password: password})
         .then(student => {
             if(student){
-                const loginAuth = {
-                    exist: true,
-                    data: student
-                };
-                res.json(loginAuth);
+                const data = student[0];
+                delete data.password;
+                const token = jwt.sign({
+                    userId: data['_id']
+                }, process.env.SECRET_KEY);
+                res.json({
+                    data,
+                    token
+                });
             }else{
-                const loginAuth = {
-                    exist: false,
-                    data: {}
-                }
-                res.json(loginAuth);
+                res.json('No user not found');
             }
         })
     },
-    loginByCookie: async (req, res) => {
-        const cookie = req.body.cookie;
-        await Student.findById(cookie)
+    loginByToken: async (req, res) => {
+        const userId = req.user.userId;
+        await Student.findById(userId)
         .then(student => {
             if(student){
+                console.log(student);
+                const data = {...student['_doc']};
+                delete data.password;
                 const loginAuth = {
                     exist: true,
-                    data: student
+                    data: data
                 };
                 res.json(loginAuth);
             }else{
