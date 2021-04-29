@@ -7,7 +7,6 @@ const teacherSchema = new Schema({
     name: String,
     code: String,
     img: String,
-    email: String,
     courses: [mongoose.Types.ObjectId]
 })
 

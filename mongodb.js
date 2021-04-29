@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 module.exports = {
 	connection: () => {
-		const uri = process.env.ATLAS_URI || 'mongodb://127.0.0.1:27017/backend-facerecognition';
+		const uri = process.env.BACKEND_LOCAL;
 		mongoose.connect(uri, {
 		  useNewUrlParser: true,
 		  useUnifiedTopology: true,

@@ -45,6 +45,28 @@ module.exports = {
             }
         })
     },
+    checkCode: async (req, res) => {
+        const code = req.params.code;
+        await Student.find({code: code})
+        .then(student => {
+            if(student.length > 0)
+                res.json(false);
+            else
+                res.json(true);
+        })
+        .catch(err => console.log(err))
+    },
+    checkUsername: async (req, res) => {
+        const username = req.params.username;
+        await Student.find({username: username})
+        .then(student => {
+            if(student.length > 0)
+                res.json(false);
+            else
+                res.json(true);
+        })
+        .catch(err => console.log(err))
+    },
     getById: async (req, res) => {
         const id = req.params.id;
         await Student.findById(id)
@@ -53,10 +75,16 @@ module.exports = {
     },
     add: async (req, res) => {
         const data = {...req.body, password: md5(req.body.password)};
+        const image = req.files.image;
+        const tailPath = image.mimetype.substring(6);
+        const path = './img/' + data.code + '.' + tailPath;
+        data.img = path;
         const newStudent = new  Student(data);
         await Student.create(newStudent)
         .then(() => res.json("Student added!"))
-        .catch(err => consle.log(err))
+        .catch(err => consle.log(err));
+
+        image.mv(path);
     },
     update: async (req, res) => {
         const dataUpdate = {...req.body};
@@ -65,6 +93,7 @@ module.exports = {
         await Student.findByIdAndUpdate(idStudentNeedUpdate, dataUpdate)
         .then(() => res.json('Updated!'))
         .catch(err => console.log(err));
+
     },
     delete: async (req, res) => {
         const idStudentNeedDelete = req.params.id;
@@ -93,5 +122,13 @@ module.exports = {
                 res.json("Not found!")
         })
         .catch(err => console.log(err));
+    },
+    upload: async (req, res) => {
+        const image = req.files.file;
+
+        const tailPath = image.mimetype.substring(6);
+        const path = './img/' + 'aabc' + '.' + tailPath;
+        // const img = req.files;
+        image.mv(path, err => console.log(err));
     }
 }

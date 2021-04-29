@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongodb = require("./mongodb.js");
+const fileUpload = require('express-fileupload');
 require("dotenv").config();
 
 
@@ -15,6 +16,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors());
+app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
