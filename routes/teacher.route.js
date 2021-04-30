@@ -9,5 +9,7 @@ router.post('/add', teacherController.add);
 router.put('/update', teacherController.update);
 router.delete('/delete/:id', teacherController.delete);
 router.get('/findbyname/:name', teacherController.findByName);
+router.get('/checkcode/:code', teacherController.checkCode);
+router.get('/checkusername/:username', teacherController.checkUsername);
 
 module.exports = router;

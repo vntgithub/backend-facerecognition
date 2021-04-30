@@ -27,6 +27,28 @@ module.exports = {
         })
         .catch(err => console.log(err));
     },
+    checkCode: async (req, res) => {
+        const code = req.params.code;
+        await Teacher.find({code: code})
+        .then(teacher => {
+            if(teacher.length > 0)
+                res.json(false);
+            else
+                res.json(true);
+        })
+        .catch(err => console.log(err))
+    },
+    checkUsername: async (req, res) => {
+        const username = req.params.username;
+        await Teacher.find({username: username})
+        .then(teacher => {
+            if(teacher.length > 0)
+                res.json(false);
+            else
+                res.json(true);
+        })
+        .catch(err => console.log(err))
+    },
     loginByToken: async (req, res) => {
         const userId = req.user.userId;
         await Teacher.findById(userId)
@@ -49,10 +71,15 @@ module.exports = {
     },
     add: async (req, res) => {
         const data = {...req.body, password: md5(req.body.password)};
+        const image = req.files.image;
+        const tailPath = image.mimetype.substring(6);
+        const path = './img/' + data.code + '.' + tailPath;
+        data.img = path;
         const newTeacher = new Teacher(data);
         await Teacher.create(newTeacher)
         .then(() => res.json("You have signed up successfully!"))
         .catch(err => consle.log(err));
+        image.mv(path);
     },
     update: async (req, res) => {
         const idTeacherNeedUpdate = req.body['_id'];
