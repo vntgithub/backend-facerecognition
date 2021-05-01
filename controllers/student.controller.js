@@ -8,8 +8,8 @@ module.exports = {
         const password = md5(req.body.password);
         await Student.find({username: username, password: password})
         .then(student => {
-            if(student){
-                const data = student[0];
+            if(student.length > 0){
+                const data = {...student[0]['_doc']};
                 delete data.password;
                 const token = jwt.sign({
                     userId: data['_id']
@@ -19,7 +19,7 @@ module.exports = {
                     token
                 });
             }else{
-                res.json('No user not found');
+                res.json('Student not found!');
             }
         })
     },

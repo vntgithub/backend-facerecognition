@@ -5,10 +5,10 @@ module.exports = {
     login: async(req, res) => {
         const username = req.body.username;
         const password = md5(req.body.password);
-        await Teacher.findOne({username: username, password: password})
+        await Teacher.find({username: username, password: password})
         .then(teacher => {
-            if(teacher){
-                const data = {...teacher['_doc']};
+            if(teacher.length > 0){
+                const data = {...teacher[0]['_doc']};
                 delete data.password;
                 const token = jwt.sign({
                     userId: data['_id']
@@ -18,11 +18,7 @@ module.exports = {
                     token
                 });
             }else{
-                const loginAuth = {
-                    exist: false,
-                    data: {}
-                }
-                res.json(loginAuth);
+                res.json('Teacher not found!');
             }
         })
         .catch(err => console.log(err));
@@ -72,13 +68,14 @@ module.exports = {
     add: async (req, res) => {
         const data = {...req.body, password: md5(req.body.password)};
         const image = req.files.image;
+        console.log(data);
         const tailPath = image.mimetype.substring(6);
         const path = './img/' + data.code + '.' + tailPath;
         data.img = path;
         const newTeacher = new Teacher(data);
         await Teacher.create(newTeacher)
         .then(() => res.json("You have signed up successfully!"))
-        .catch(err => consle.log(err));
+        .catch(err => console.log(err));
         image.mv(path);
     },
     update: async (req, res) => {
