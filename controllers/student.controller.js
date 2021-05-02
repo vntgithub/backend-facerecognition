@@ -16,7 +16,8 @@ module.exports = {
                 }, process.env.SECRET_KEY);
                 res.json({
                     data,
-                    token
+                    token,
+                    position: 'student'
                 });
             }else{
                 res.json('Student not found!');
@@ -31,17 +32,12 @@ module.exports = {
                 console.log(student);
                 const data = {...student['_doc']};
                 delete data.password;
-                const loginAuth = {
-                    exist: true,
-                    data: data
-                };
-                res.json(loginAuth);
+                res.json({
+                    data,
+                    position: 'student'
+                });
             }else{
-                const loginAuth = {
-                    exist: false,
-                    data: {}
-                }
-                res.json(loginAuth);
+                res.json('Token is wrong!');
             }
         })
     },
@@ -77,7 +73,7 @@ module.exports = {
         const data = {...req.body, password: md5(req.body.password)};
         const image = req.files.image;
         const tailPath = image.mimetype.substring(6);
-        const path = './img/' + data.code + '.' + tailPath;
+        const path = process.env.DIR_IMAGE + data.code + '.' + tailPath;
         data.img = path;
         const newStudent = new  Student(data);
         await Student.create(newStudent)

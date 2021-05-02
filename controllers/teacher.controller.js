@@ -15,7 +15,8 @@ module.exports = {
                 }, process.env.SECRET_KEY);
                 res.json({
                     data,
-                    token
+                    token,
+                    position: 'teacher'
                 });
             }else{
                 res.json('Teacher not found!');
@@ -51,26 +52,21 @@ module.exports = {
         .then(teacher => {
             if(teacher){
                 const data = {...teacher['_doc']};
-                const loginAuth = {
-                    exist: true,
-                    data
-                }
-                res.json(loginAuth);
+                delete data.password;
+                res.json({
+                    data,
+                    position: 'teacher'
+                });
             }else{
-                const loginAuth = {
-                    exist: false,
-                    data: {}
-                }
-                res.json(loginAuth);
+                res.json('Token is wrong!');
             }
         })
     },
     add: async (req, res) => {
         const data = {...req.body, password: md5(req.body.password)};
         const image = req.files.image;
-        console.log(data);
         const tailPath = image.mimetype.substring(6);
-        const path = './img/' + data.code + '.' + tailPath;
+        const path = process.env.DIR_IMAGE + data.code + '.' + tailPath;
         data.img = path;
         const newTeacher = new Teacher(data);
         await Teacher.create(newTeacher)
