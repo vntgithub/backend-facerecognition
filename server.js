@@ -6,8 +6,8 @@ require("dotenv").config();
 
 
 const adminRoute = require('./routes/admin.route');
-const teacherRoute = require('./routes/teacher.route');
-const studentRoute = require('./routes/student.route');
+//const teacherRoute = require('./routes/teacher.route');
+const userRoute = require('./routes/user.route');
 const courseRoute = require('./routes/course.route');
 const classRoute = require('./routes/class.route');
 // const groupRoute = require('./routes/group.route');
@@ -21,8 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/api/admin', adminRoute);
-app.use('/api/teacher', teacherRoute);
-app.use('/api/student', studentRoute);
+//app.use('/api/teacher', teacherRoute);
+app.use('/api/user', userRoute);
 app.use('/api/course', courseRoute);
 app.use('/api/class', classRoute);
 
