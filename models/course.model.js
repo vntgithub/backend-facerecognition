@@ -6,7 +6,6 @@ const courseSchema = new Schema({
     name: String,
     lessons: Array,
     teacherId: mongoose.Types.ObjectId,
-    teacherName: String
 })
 
 const Course = mongoose.model('Course', courseSchema, 'courses');

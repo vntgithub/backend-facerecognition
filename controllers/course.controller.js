@@ -8,9 +8,8 @@ module.exports = {
         .catch(err => console.log(err))
     },
     add: async (req, res) => {
-        const newCourse = {...req.body, lessons: [...req.body.lessons]};
-        await Course.create(newCourse);
-        res.json("Course created!");
+        await Course.create(req.body)
+        .then(() => res.json("Course created!"))
     },
     update: async (req, res) => {
         const idCourseNeedUpdate = req.params.id;
@@ -45,5 +44,16 @@ module.exports = {
             }
         })
         .catch(err => console.log(err));
+    },
+    checkCodeExist: async (req, res) => {
+        const code = req.params.code;
+        await Course.find({code: code})
+        .then(course => {
+            if(course.length > 0)
+                res.json(false)
+            else
+                res.json(true);
+        })
+        .catch(err => console.log(err))
     }
 }
