@@ -8,17 +8,13 @@ module.exports = {
         .catch(err => console.log(err))
     },
     add: async (req, res) => {
-        await Course.create(req.body)
-        .then(() => res.json("Course created!"))
+        const lessons = [...req.body.lessons];
+        await Course.create({...req.body, lessons: lessons})
+        .then(course => res.json(course))
     },
     update: async (req, res) => {
-        const idCourseNeedUpdate = req.params.id;
-        Course.findById(idCourseNeedUpdate)
-        .then(course => {
-            const newcourse = req.body;
-            course = {...newcourse}
-            res.json("Updated!");
-        })
+        Course.findByIdAndUpdate(req.body['_id'], req.body)
+        .then(() => res.json('Updated!'))
         .catch(err => console.log(err))
     },
     delete: async (req, res) => {
