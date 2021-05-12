@@ -14,13 +14,11 @@ module.exports = {
         .catch(err => console.log(err))
     },
     add: async (req, res) => {
-        const groupId = req.body.groupId;
         const newClass = new Class({
-            groupId: groupId,
             data: []
         });
         await Class.create(newClass)
-        .then(() => res.json('Class added!'))
+        .then(rs => res.json(rs))
         .catch(err => console.log(err));
     },
     studentJoinClass: async (req, res) => {

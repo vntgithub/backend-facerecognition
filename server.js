@@ -10,7 +10,7 @@ const adminRoute = require('./routes/admin.route');
 const userRoute = require('./routes/user.route');
 const courseRoute = require('./routes/course.route');
 const classRoute = require('./routes/class.route');
-// const groupRoute = require('./routes/group.route');
+const groupRoute = require('./routes/group.route');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/api/admin', adminRoute);
-//app.use('/api/teacher', teacherRoute);
+app.use('/api/group',groupRoute);
 app.use('/api/user', userRoute);
 app.use('/api/course', courseRoute);
 app.use('/api/class', classRoute);

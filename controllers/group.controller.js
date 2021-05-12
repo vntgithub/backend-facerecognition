@@ -4,7 +4,7 @@ module.exports = {
     add: async ( req, res) => {
         const newGroup = new Group(req.body);
         await Group.create(newGroup)
-        .then(() => res.json("Group added!"))
+        .then(group => res.json(group))
         .catch(err => console.log(err));
     },
     update: async (req, res) => {
@@ -16,7 +16,7 @@ module.exports = {
         .catch(err => console.log(err));
     },
     delete: async (req, res) => {
-        const idNeedDelete = req.body.id;
+        const idNeedDelete = req.params.id;
         await Group.findByIdAndDelete(idNeedDelete)
         .then(() => res.json("Group deleted!"))
         .catch(err => console.log(err));
@@ -40,16 +40,27 @@ module.exports = {
     //     })
     //     .catch(err => console.log(err));
     // },
-    getGroupsByArrayId: (req, res) => {
-        const arrayId = [...req.body];
-        await Group.find({'_id': { $in: arrayId }})
+    // getGroupsByArrayId: (req, res) => {
+    //     const arrayId = [...req.body];
+    //     await Group.find({'_id': { $in: arrayId }})
+    //     .then(groups => {
+    //         if(groups){
+    //             res.json(groups)
+    //         }else{
+    //             res.json([]);
+    //         }
+    //     })
+    //     .catch(err => console.log(err));
+    // },
+    getByCourseId: async (req, res) => {
+        const id = req.params.id;
+        await Group.find({courseId: id})
         .then(groups => {
-            if(groups){
+            if(groups.length > 0)
                 res.json(groups)
-            }else{
-                res.json([]);
-            }
+            else
+                res.json([])
         })
-        .catch(err => console.log(err));
-    },
+        .catch(err => res.json(err))
+    }
 }
