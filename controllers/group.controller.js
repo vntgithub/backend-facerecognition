@@ -1,8 +1,23 @@
 const Group = require('../models/group.model');
+const Class = require('../models/class.model');
 
 module.exports = {
+//     getNumberGroupInYearAndSemester: async (req, res) => {
+//         const {idCourse, year, semester} = req.params;
+// 
+//         await Group.find({
+//             idCourse: idCourse,
+//             year: year,
+//             semester: semester
+//         })
+//         .then(groups => res.json(groups.length))
+//         .catch(res.json(err))
+//     },
     add: async ( req, res) => {
-        const newGroup = new Group(req.body);
+        const newClass = await Class.create({data: []})
+
+        let newGroup = new Group(req.body);
+        newGroup.classId = newClass['_id'];
         await Group.create(newGroup)
         .then(group => res.json(group))
         .catch(err => console.log(err));
@@ -60,6 +75,18 @@ module.exports = {
                 res.json(groups)
             else
                 res.json([])
+        })
+        .catch(err => res.json(err))
+    },
+    checkNo: async (req, res) => {
+        console.log(req.body)
+        await Group.find(req.body)
+        .then(group => {
+            console.log(group.length)
+            if(group.length > 0)
+                res.json(false);
+            else
+                res.json(true)
         })
         .catch(err => res.json(err))
     }

@@ -51,5 +51,11 @@ module.exports = {
                 res.json(true);
         })
         .catch(err => console.log(err))
+    },
+    getById: async (req, res) => {
+        const id = req.params.id;
+        await Course.findById(id)
+        .then(course => res.json(course['_doc']))
+        .catch(err => res.json(err))
     }
 }
