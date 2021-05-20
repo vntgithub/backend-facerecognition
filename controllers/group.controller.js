@@ -2,17 +2,6 @@ const Group = require('../models/group.model');
 const Class = require('../models/class.model');
 
 module.exports = {
-//     getNumberGroupInYearAndSemester: async (req, res) => {
-//         const {idCourse, year, semester} = req.params;
-// 
-//         await Group.find({
-//             idCourse: idCourse,
-//             year: year,
-//             semester: semester
-//         })
-//         .then(groups => res.json(groups.length))
-//         .catch(res.json(err))
-//     },
     add: async ( req, res) => {
         const newClass = await Class.create({data: []})
 

@@ -79,7 +79,7 @@ module.exports = {
         let countFile = 0;
         fs.readdir(dir, (err, files) => countFile = files.length + 1);
         const path = dir + '/' + countFile + '.' + tailPath;
-        data.img = './img/' + data.code + '/' + countFile + '.' + tailPath;
+        data.img = '/img/' + data.code + '/' + countFile + '.' + tailPath;
         const newUser = new  User(data);
         await User.create(newUser)
         .then(() => res.json("You have signed up successfully!"))
