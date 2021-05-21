@@ -68,7 +68,6 @@ module.exports = {
         .catch(err => res.json(err))
     },
     checkNo: async (req, res) => {
-        console.log(req.body)
         await Group.find(req.body)
         .then(group => {
             console.log(group.length)
