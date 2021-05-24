@@ -22,15 +22,15 @@ module.exports = {
         .catch(err => console.log(err));
     },
     studentJoinClass: async (req, res) => {
-        const classId = req.body.classId;
-        const studentId = req.body.studentId;
-        const lesson = [...req.body.lesson];
+        const {classId, studentId} = req.body;
+        // console.log(req.body)
         await Class.findById(classId)
         .then(rs => {
+            console.log(rs)
             if(rs){
                 rs.data.push({
                     studentId: studentId,
-                    lessonAttend: lesson
+                    lessonAttend: []
                 })
                 rs.save();
                 res.json("Joined!")

@@ -52,6 +52,12 @@ module.exports = {
         .then(group => res.json(group))
         .catch(err => res.json(err))
     },
+    getByArrayId: async (req, res) => {
+        const arr = req.body;
+        await Group.find({'_id': {$in: arr}})
+        .then(groups => res.json(groups))
+        .catch(err => console.log(err))
+    },
     findByCode: async (req, res) => {
         const code = req.params.code;
         await Group.find({

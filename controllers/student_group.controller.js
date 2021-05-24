@@ -3,18 +3,17 @@ const Student_Group = require('../models/student_group');
 module.exports = {
 	getByStudentId: async (req, res) => {
 		const studentId = req.params.id;
-		console.log(studentId)
-		// await Student_Group.find({studentId: studentId})
-		// .then(rs => res.json(rs.groups))
-		// .catch(err => console.log(err))
-		res.json([]);
+		await Student_Group.find({studentId: studentId})
+		.then(rs => res.json(rs[0]))
+		.catch(err => console.log(err))
 	},
 	joinGroup: async (req, res) => {
 		const {studentId, groupId} = req.body;
 		await Student_Group.find({studentId: studentId})
 		.then(rs => {
-			rs.groups.push(groupId);
-			rs.save();
+			rs[0].groups.push(groupId);
+			rs[0].save();
+			console.log(rs)
 		})
 		.catch(err => console.log(err))
 	},
