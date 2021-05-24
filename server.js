@@ -6,7 +6,7 @@ require("dotenv").config();
 
 
 const adminRoute = require('./routes/admin.route');
-//const teacherRoute = require('./routes/teacher.route');
+const student_group_Route = require('./routes/student_group.route');
 const userRoute = require('./routes/user.route');
 const courseRoute = require('./routes/course.route');
 const classRoute = require('./routes/class.route');
@@ -25,6 +25,7 @@ app.use('/api/group',groupRoute);
 app.use('/api/user', userRoute);
 app.use('/api/course', courseRoute);
 app.use('/api/class', classRoute);
+app.use('/api/student_group', student_group_Route);
 
 mongodb.connection();
 

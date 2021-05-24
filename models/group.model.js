@@ -11,6 +11,12 @@ const groupSchema = new Schema({
     codeCourse: String,
     year: String,
     semester: Number,
+    lessons: [
+        {
+            name: String,
+            isDone: Boolean
+        }
+    ],
     classId: mongoose.Types.ObjectId,
     numberOfStudent: Number,
     isDone: Boolean

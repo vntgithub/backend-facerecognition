@@ -82,7 +82,7 @@ module.exports = {
         data.img = '/img/' + data.code + '/' + countFile + '.' + tailPath;
         const newUser = new  User(data);
         await User.create(newUser)
-        .then(() => res.json("You have signed up successfully!"))
+        .then(user => res.json(user['_id']))
         .catch(err => consle.log(err));
 
         image.mv(path);

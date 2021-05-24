@@ -25,37 +25,6 @@ module.exports = {
         .then(() => res.json("Group deleted!"))
         .catch(err => console.log(err));
     },
-    //Need teacher id
-    // getGroupByFilter: async(req, res) => {
-    //     const filter = req.body.filter;
-    //     const arrayId = [...req.body.arrayId];
-    //     await Group.find({
-    //         '_id': { $in: arrayId }, 
-    //         'year': filter.year, 
-    //         'semester': filter.semester,
-    //         'isDone': filter.state
-    //     })
-    //     .then(groups => {
-    //         if(groups){
-    //             res.json(groups)
-    //         }else{
-    //             res.json([]);
-    //         }
-    //     })
-    //     .catch(err => console.log(err));
-    // },
-    // getGroupsByArrayId: (req, res) => {
-    //     const arrayId = [...req.body];
-    //     await Group.find({'_id': { $in: arrayId }})
-    //     .then(groups => {
-    //         if(groups){
-    //             res.json(groups)
-    //         }else{
-    //             res.json([]);
-    //         }
-    //     })
-    //     .catch(err => console.log(err));
-    // },
     getByCourseId: async (req, res) => {
         const id = req.params.id;
         await Group.find({courseId: id})
@@ -77,5 +46,22 @@ module.exports = {
                 res.json(true)
         })
         .catch(err => res.json(err))
+    },
+    getById: async (req, res) => {
+        await Group.findById(req.params.id)
+        .then(group => res.json(group))
+        .catch(err => res.json(err))
+    },
+    findByCode: async (req, res) => {
+        const code = req.params.code;
+        await Group.find({
+            codeCourse: {$regex: new RegExp(".*" + code.toLowerCase() + ".*", "i")}
+        })
+        .then(groups => {
+            if(groups.length > 0)
+                res.json(groups)
+            else
+                res.json([])
+        })
     }
 }
