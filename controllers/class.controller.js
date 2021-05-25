@@ -23,10 +23,8 @@ module.exports = {
     },
     studentJoinClass: async (req, res) => {
         const {classId, studentId} = req.body;
-        // console.log(req.body)
         await Class.findById(classId)
         .then(rs => {
-            console.log(rs)
             if(rs){
                 rs.data.push({
                     studentId: studentId,
@@ -39,5 +37,32 @@ module.exports = {
             }
         })
         .catch(err => console.log(err));
+    },
+    studentLeaveClass: async(req, res) => {
+        const {classId, studentId} = req.body;
+        await Class.findById(classId)
+        .then(rs => {
+            if(rs){
+                let index = -1;
+                for(let i = 0; i < rs.data.length; i++){
+                    if(rs.data[i].studentId === studentId){
+                        index = i;
+                        console.log(index);
+                        break;
+                    }
+                }
+                rs.data.splice(index,1);
+                rs.save();
+                res.json("Joined!")
+            }else
+                res.json('Class not found!')
+        })
+        .catch(err => console.log(err));
+    }, 
+    delete: async (req, res) => {
+        const id = req.params.id;
+        await Class.findByIdAndDelete(id)
+        .then(() => res.json('Deleted!'))
+        .catch(err => console.log(err))
     }
 }

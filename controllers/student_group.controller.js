@@ -13,7 +13,6 @@ module.exports = {
 		.then(rs => {
 			rs[0].groups.push(groupId);
 			rs[0].save();
-			console.log(rs)
 		})
 		.catch(err => console.log(err))
 	},
@@ -21,9 +20,9 @@ module.exports = {
 		const {studentId, groupId} = req.body;
 		await Student_Group.find({studentId: studentId})
 		.then(rs => {
-			const index = rs.groups.indexOf(groupId);
-			rs.groups.splice(index, 1);
-			rs.save();
+			const index = rs[0].groups.indexOf(groupId);
+			rs[0].groups.splice(index, 1);
+			rs[0].save();
 		})
 		.catch(err => console.log(err))
 	},
