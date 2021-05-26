@@ -7,10 +7,10 @@ module.exports = {
     login: async(req, res) => {
         const username = req.body.username;
         const password = md5(req.body.password);
-        await User.find({username: username, password: password})
+        await User.findOne({username: username, password: password})
         .then(user => {
-            if(user.length > 0){
-                const userInformation = {...user[0]['_doc']};
+            if(user){
+                const userInformation = {...user['_doc']};
                 delete userInformation.password;
                 const token = jwt.sign({
                     userId: userInformation['_id']
@@ -42,9 +42,9 @@ module.exports = {
     },
     checkCode: async (req, res) => {
         const code = req.params.code;
-        await User.find({code: code})
+        await User.findOne({code: code})
         .then(user => {
-            if(user.length > 0)
+            if(user)
                 res.json(false);
             else
                 res.json(true);
@@ -53,9 +53,9 @@ module.exports = {
     },
     checkUsername: async (req, res) => {
         const username = req.params.username;
-        await User.find({username: username})
+        await User.findOne({username: username})
         .then(user => {
-            if(user.length > 0)
+            if(user)
                 res.json(false);
             else
                 res.json(true);
@@ -124,4 +124,10 @@ module.exports = {
         })
         .catch(err => console.log(err));
     },
+    getNameCodeByArrId: async (req, res) => {
+        const arr = req.body;
+        await User.find({'_id': {$in: arr}}).select({'name': 1, 'code': 1})
+        .then(rs => res.json(rs))
+        .catch(err => console.log(err))
+    }
 }

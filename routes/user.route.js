@@ -14,5 +14,6 @@ router.get('/findbyname/:name', userController.findByName);
 router.get('/findbycode/:code', userController.findByCode);
 router.get('/checkcode/:code', userController.checkCode);
 router.get('/checkusername/:username', userController.checkUsername);
+router.post('/getbyarrayid', userController.getNameCodeByArrId);
 
 module.exports = router;

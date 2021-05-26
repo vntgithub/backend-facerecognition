@@ -37,10 +37,9 @@ module.exports = {
         .catch(err => res.json(err))
     },
     checkNo: async (req, res) => {
-        await Group.find(req.body)
+        await Group.findOne(req.body)
         .then(group => {
-            console.log(group.length)
-            if(group.length > 0)
+            if(group)
                 res.json(false);
             else
                 res.json(true)

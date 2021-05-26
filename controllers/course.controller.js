@@ -43,9 +43,9 @@ module.exports = {
     },
     checkCodeExist: async (req, res) => {
         const code = req.params.code;
-        await Course.find({code: code})
+        await Course.findOne({code: code})
         .then(course => {
-            if(course.length > 0)
+            if(course)
                 res.json(false)
             else
                 res.json(true);
