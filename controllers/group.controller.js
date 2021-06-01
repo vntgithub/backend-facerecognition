@@ -3,8 +3,7 @@ const Class = require('../models/class.model');
 
 module.exports = {
     add: async ( req, res) => {
-        const newClass = await Class.create({data: []})
-
+        const newClass = await Class.create({data: [], numOfLesson: req.body.lessons.length})
         let newGroup = new Group(req.body);
         newGroup.classId = newClass['_id'];
         await Group.create(newGroup)
@@ -68,5 +67,14 @@ module.exports = {
             else
                 res.json([])
         })
+    },
+    endLesson: async (req, res) => {
+        const {idGroup, indexLesson} = req.body;
+        await Group.findById(id)
+        .then(rs => {
+            rs.lessons[indexLesson].isDone = true;
+            rs.save()
+        })
+        .catch(err => console.log(err))
     }
 }

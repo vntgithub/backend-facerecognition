@@ -70,22 +70,25 @@ module.exports = {
     },
     add: async (req, res) => {
         const data = {...req.body, password: md5(req.body.password)};
-        const image = req.files.image;
-        const tailPath = image.mimetype.substring(6);
+        const imagefirst = req.files.imagefirst;
+        const imagesecond = req.files.imagesecond;
+        //const tailPath = image.mimetype.substring(6);
         const dir = process.env.DIR_IMAGE + data.code;
         if (!fs.existsSync(dir)){
             fs.mkdirSync(dir);
         }
         let countFile = 0;
         fs.readdir(dir, (err, files) => countFile = files.length + 1);
-        const path = dir + '/' + countFile + '.' + tailPath;
-        data.img = '/img/' + data.code + '/' + countFile + '.' + tailPath;
+        const path = dir + '/' + countFile  + '.jpg';
+        const path2 = dir + '/' + (countFile+1) + '.jpg';
+        data.img = '/img/' + data.code + '/' + countFile + '.jpg';
         const newUser = new  User(data);
         await User.create(newUser)
         .then(user => res.json(user['_id']))
         .catch(err => consle.log(err));
 
-        image.mv(path);
+        imagefirst.mv(path);
+        imagesecond.mv(path2);
     },
     update: async (req, res) => {
         const dataUpdate = {...req.body};

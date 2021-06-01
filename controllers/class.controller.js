@@ -14,8 +14,10 @@ module.exports = {
         .catch(err => console.log(err))
     },
     add: async (req, res) => {
+        const numOfLesson = req.body;
         const newClass = new Class({
-            data: []
+            data: [],
+            numOfLesson
         });
         await Class.create(newClass)
         .then(rs => res.json(rs))
@@ -28,7 +30,7 @@ module.exports = {
             if(rs){
                 rs.data.push({
                     studentId: studentId,
-                    lessonAttend: []
+                    lessonAttend: new Array(rs.numOfLesson).fill(false)
                 })
                 rs.save();
                 res.json("Joined!")
@@ -47,7 +49,6 @@ module.exports = {
                 for(let i = 0; i < rs.data.length; i++){
                     if(rs.data[i].studentId === studentId){
                         index = i;
-                        console.log(index);
                         break;
                     }
                 }
@@ -63,6 +64,22 @@ module.exports = {
         const id = req.params.id;
         await Class.findByIdAndDelete(id)
         .then(() => res.json('Deleted!'))
+        .catch(err => console.log(err))
+    },
+    recognition: async (req, res) => {
+        const {classId, arr, indexLesson} = req.body;
+        let updateData;
+        await Class.findById(classId)
+        .then(rs => {
+            updateData = new Class(rs)
+            console.log(updateData)
+            updateData.data.forEach((item,index) => {
+                item.lessonAttend[indexLesson] = arr[index];
+            })
+        })
+        .catch(err => console.log(err))
+        await Class.findByIdAndUpdate(classId, updateData)
+        .then(() => res.json('Updated!'))
         .catch(err => console.log(err))
     }
 }
