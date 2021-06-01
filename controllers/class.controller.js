@@ -72,7 +72,6 @@ module.exports = {
         await Class.findById(classId)
         .then(rs => {
             updateData = new Class(rs)
-            console.log(updateData)
             updateData.data.forEach((item,index) => {
                 item.lessonAttend[indexLesson] = arr[index];
             })

@@ -70,7 +70,7 @@ module.exports = {
     },
     endLesson: async (req, res) => {
         const {idGroup, indexLesson} = req.body;
-        await Group.findById(id)
+        await Group.findById(idGroup)
         .then(rs => {
             rs.lessons[indexLesson].isDone = true;
             rs.save()
